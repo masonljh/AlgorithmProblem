@@ -4,14 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class FileMain {
+public class FileMainSecond {
 
     public static void main(String[] args) {
 
-        int [][] mat;
-        int [][] result;
+        int[][] mat;
         int m;
         int n;
+        boolean[] x;
+        boolean[] y;
 
         try {
             File file = new File("src/main/java/problem_1_8/input.txt");
@@ -22,12 +23,19 @@ public class FileMain {
             System.out.println(m + " / " + n);
 
             mat = new int[n][m];
-            result = new int[n][m];
+
+            x = new boolean[m];
+            y = new boolean[n];
 
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < m; j++) {
                     mat[i][j] = scanner.nextInt();
-                    result[i][j] = mat[i][j];
+                    if (mat[i][j] != 0) {
+                        continue;
+                    }
+
+                    x[j] = true;
+                    y[i] = true;
                 }
             }
         } catch (IOException e) {
@@ -37,28 +45,21 @@ public class FileMain {
         System.out.println("Input");
         printMat(n, m, mat);
 
-        setZeroMat(n, m, mat, result);
+        setZeroMat(n, m, mat, x, y);
 
         System.out.println();
         System.out.println("Output");
-        printMat(n, m, result);
+        printMat(n, m, mat);
     }
 
-    private static void setZeroMat(int n, int m, int[][] mat, int[][] result) {
+    private static void setZeroMat(int n, int m, int[][] mat, boolean[] x, boolean[] y) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (mat[i][j] != 0) {
+                if (!x[j] && !y[i]) {
                     continue;
                 }
 
-                // @NOTE: (jonghyo) 이게 제일 무식한 방법일 것 같다.
-                for (int k = 0; k < n; k++) {
-                    result[k][j] = 0;
-                }
-
-                for (int k = 0; k < m; k++) {
-                    result[i][k] = 0;
-                }
+                mat[i][j] = 0;
             }
         }
     }

@@ -33,10 +33,7 @@ public class FileMain {
             currentNode = firstNode;
             System.out.println("----------original-----------");
             System.out.print(currentNode.getName() + " ");
-            while (currentNode.hasNextNode()) {
-                currentNode = currentNode.getNextNode();
-                System.out.print(currentNode.getName() + " ");
-            }
+            printNodes(currentNode);
         } catch (IOException e) {
             return;
         }
@@ -60,6 +57,10 @@ public class FileMain {
         System.out.println();
         System.out.println("----------changed-----------");
         System.out.print(currentNode.getName() + " ");
+        printNodes(currentNode);
+    }
+
+    private static void printNodes(Node currentNode) {
         while (currentNode.hasNextNode()) {
             currentNode = currentNode.getNextNode();
             System.out.print(currentNode.getName() + " ");

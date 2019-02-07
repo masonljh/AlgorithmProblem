@@ -29,7 +29,6 @@ public class ConsoleMain {
 
                     System.out.print("데이터 : ");
                     String data = inputReader.next();
-                    System.out.println(data);
                     stack.push(m, data);
                     break;
                 case 1:

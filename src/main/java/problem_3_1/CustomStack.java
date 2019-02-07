@@ -27,7 +27,6 @@ public class CustomStack {
 
     void push(int n, String data) {
         indexes[n - 1]++;
-        System.out.println(indexes[n - 1] + " / " + getRealIdx(n));
         arrays[getRealIdx(n)] = data;
     }
 

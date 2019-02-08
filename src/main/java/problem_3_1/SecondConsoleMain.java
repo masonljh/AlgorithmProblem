@@ -20,13 +20,13 @@ public class SecondConsoleMain {
             int m;
             switch (command) {
                 case 0:
-                    System.out.print("몇 번째 스택?");
-                    m = inputReader.nextInt();
                     if (stack.isFull()) {
-                        System.out.println(m + "번째 스택은 가득찼습니다.");
+                        System.out.println("더 이상 넣을 공간이 없습니다.");
                         break;
                     }
 
+                    System.out.print("몇 번째 스택?");
+                    m = inputReader.nextInt();
                     System.out.print("데이터 : ");
                     String data = inputReader.next();
                     stack.push(m, data);

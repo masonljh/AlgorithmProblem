@@ -6,13 +6,13 @@ public class VotileCustomStack implements Stack {
     private int maxLength;
     private int currentSize;
     private Element [] arrays;
-    private int [] startIndexes;
+    private int [] sizes;
 
     VotileCustomStack(int n, int length) {
         arrays = new Element[length];
-        startIndexes = new int[n];
+        sizes = new int[n];
         for (int i = 0; i < n; i++) {
-            startIndexes[i] = -1;
+            sizes[i] = 0;
         }
         maxLength = length;
         cnt = n;
@@ -32,7 +32,7 @@ public class VotileCustomStack implements Stack {
 
     @Override
     public boolean isEmpty(int n) {
-        return startIndexes[n - 1] < 0;
+        return sizes[n - 1] == 0;
     }
 
     @Override
@@ -43,17 +43,25 @@ public class VotileCustomStack implements Stack {
         }
 
         insertElement(new Element(n, data));
-        currentSize++;
-        sortArray();
+        sizes[n - 1]++;
     }
 
     private void insertElement(Element addedElement) {
-        for (int i = 0; i < maxLength; i++) {
-            if (arrays[i] == null) {
-                arrays[i] = addedElement;
+        int addedPosition = 0;
+        for (int i = currentSize - 1; i >= 0; i--) {
+            if (arrays[i].getStackNum() <= addedElement.getStackNum()) {
+                addedPosition = i + 1;
                 break;
             }
         }
+
+        for (int i = addedPosition; i < currentSize; i++) {
+            Element element = arrays[i];
+            element.swap(addedElement);
+        }
+
+        currentSize++;
+        arrays[currentSize - 1] = addedElement;
     }
 
     @Override
@@ -69,17 +77,26 @@ public class VotileCustomStack implements Stack {
         }
 
         deleteElement(n);
-        currentSize--;
-        sortArray();
+        sizes[n - 1]--;
     }
 
     private void deleteElement(int n) {
-        for (int i = maxLength - 1; i >= 0; i--) {
+        int deletedPosition = -1;
+        for (int i = currentSize - 1; i >= 0; i--) {
             if (arrays[i].getStackNum() == n) {
                 arrays[i] = null;
+                deletedPosition = i;
                 break;
             }
         }
+
+        if (deletedPosition == -1) {
+            return;
+        }
+
+        currentSize--;
+        if (currentSize - deletedPosition >= 0)
+            System.arraycopy(arrays, deletedPosition + 1, arrays, deletedPosition, currentSize - deletedPosition);
     }
 
     @Override
@@ -90,19 +107,6 @@ public class VotileCustomStack implements Stack {
             }
         }
         System.out.println();
-    }
-
-    private void sortArray() {
-        Element insertedElement = arrays[currentSize - 1];
-        for (int i = currentSize - 2; i >= currentSize; i--) {
-            Element currentElement = arrays[i];
-            if (currentElement.getStackNum() <= insertedElement.getStackNum()) {
-                break;
-            }
-
-            currentElement.swap(insertedElement);
-            insertedElement = currentElement;
-        }
     }
 
     private class Element {

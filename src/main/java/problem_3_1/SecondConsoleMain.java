@@ -2,7 +2,7 @@ package problem_3_1;
 
 import java.util.Scanner;
 
-public class ConsoleMain {
+public class SecondConsoleMain {
 
     public static void main(String[] args) {
         Scanner inputReader = new Scanner(System.in);
@@ -10,7 +10,7 @@ public class ConsoleMain {
         int n = inputReader.nextInt();
         System.out.print("스택의 최대 길이 : ");
         int length = inputReader.nextInt();
-        CustomStack stack = new CustomStack(n, length);
+        Stack stack = new VotileCustomStack(n, length);
 
         boolean isExit = false;
         while(!isExit) {
@@ -22,7 +22,7 @@ public class ConsoleMain {
                 case 0:
                     System.out.print("몇 번째 스택?");
                     m = inputReader.nextInt();
-                    if (stack.isFull(m)) {
+                    if (stack.isFull()) {
                         System.out.println(m + "번째 스택은 가득찼습니다.");
                         break;
                     }

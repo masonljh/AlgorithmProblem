@@ -1,13 +1,13 @@
 package problem_3_1;
 
-public class CustomStack {
+public class FixedCustomStack implements Stack{
 
     private int cnt;
     private int maxLength;
     private String [] arrays;
     private int [] indexes;
 
-    CustomStack(int n, int length) {
+    FixedCustomStack(int n, int length) {
         arrays = new String[n * length];
         indexes = new int[n];
         maxLength = length;
@@ -17,20 +17,39 @@ public class CustomStack {
         cnt = n;
     }
 
-    boolean isFull(int n) {
+    @Override
+    public boolean isFull() {
+        return false;
+    }
+
+    @Override
+    public boolean isFull(int n) {
         return indexes[n - 1] == maxLength - 1;
     }
 
-    private boolean isEmpty(int n) {
+    @Override
+    public boolean isEmpty(int n) {
         return indexes[n - 1] < 0;
     }
 
-    void push(int n, String data) {
+    @Override
+    public void push(int n, String data) {
+        if (n > cnt) {
+            System.out.println("해당 스택은 존재하지 않습니다.");
+            return;
+        }
+
         indexes[n - 1]++;
         arrays[getRealIdx(n)] = data;
     }
 
-    void pop(int n) {
+    @Override
+    public void pop(int n) {
+        if (n > cnt) {
+            System.out.println("해당 스택은 존재하지 않습니다.");
+            return;
+        }
+
         if (isEmpty(n)) {
             System.out.println(n + "번째 스택은 비어있습니다.");
             return;
@@ -44,6 +63,7 @@ public class CustomStack {
         return indexes[n - 1] * cnt + n - 1;
     }
 
+    @Override
     public void print(int n) {
         for (int i = n - 1; i <= getRealIdx(n); i += cnt) {
             System.out.print(arrays[i] + " ");

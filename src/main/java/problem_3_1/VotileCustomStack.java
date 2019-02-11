@@ -19,14 +19,7 @@ public class VotileCustomStack implements Stack {
         currentSize = 0;
     }
 
-    @Override
     public boolean isFull() {
-        return currentSize == maxLength;
-    }
-
-    @Override
-    public boolean isFull(int n) {
-        // 사용하지 않음
         return currentSize == maxLength;
     }
 

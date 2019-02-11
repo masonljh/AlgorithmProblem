@@ -10,7 +10,7 @@ public class SecondConsoleMain {
         int n = inputReader.nextInt();
         System.out.print("스택의 최대 길이 : ");
         int length = inputReader.nextInt();
-        Stack stack = new VotileCustomStack(n, length);
+        VotileCustomStack stack = new VotileCustomStack(n, length);
 
         boolean isExit = false;
         while(!isExit) {

@@ -17,12 +17,6 @@ public class FixedCustomStack implements Stack{
         cnt = n;
     }
 
-    @Override
-    public boolean isFull() {
-        return false;
-    }
-
-    @Override
     public boolean isFull(int n) {
         return indexes[n - 1] == maxLength - 1;
     }

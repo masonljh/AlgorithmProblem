@@ -45,6 +45,10 @@ public class FileMainFirst {
     }
 
     private static void setZeroMat(int n, int m, int[][] mat, int[][] result) {
+        /*
+         * 무조건 기존의 mat 배열에서 0이 발견되면 상하좌우를 0으로 만든다.
+         * 효율성은 전혀 고려 안 하는 방법이다.
+         */
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (mat[i][j] != 0) {

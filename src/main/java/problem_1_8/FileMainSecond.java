@@ -53,6 +53,11 @@ public class FileMainSecond {
     }
 
     private static void setZeroMat(int n, int m, int[][] mat, boolean[] x, boolean[] y) {
+        /*
+         * 첫번째 방법과는 다르게
+         * 기존의 배열을 그대로 이용하면서 0이 있었던 위치만 기억해서 해당 위치에 포함이 되면 0으로만 바꿔준다.
+         */
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (!x[j] && !y[i]) {

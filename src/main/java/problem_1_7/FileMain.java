@@ -27,6 +27,9 @@ public class FileMain {
             return;
         }
 
+        System.out.println("Input Image");
+        printImages(n, image);
+
         /**
          *  정사각형을 기준으로 봤을 때
          *  왼쪽 위 점은 image[start][j]
@@ -34,14 +37,9 @@ public class FileMain {
          *  왼쪽 아래 점은 image[end - 1 - j + start][start]
          *  오른쪽 아래 점은 image[end - 1][end - 1 - j + start]
          */
-
-        System.out.println("Input Image");
-        printImages(n, image);
-
         int mid = Math.round((float) n / 2);
         int end = n;
         for (int start = 0; start < mid; start++) {
-//            System.out.println(start + " / " + end);
             for (int j = start; j < end - 1; j++) {
                 /**
                  *  90도 회전은 아래와 같은 로직으로 동작한다.
@@ -49,19 +47,9 @@ public class FileMain {
                  *  2. 아래 두 점끼리 바꿈
                  *  3. 왼쪽 위 점과 오른쪽 아래 점을 바꿈
                  */
-//                System.out.println("j=" + j);
-//                System.out.println("(" + start + "," + j + ") <-> (" + j + "," + (end - 1) + ")");
                 swap(image[start][j], image[j][end - 1]);
-//                printImages(n, image);
-//                System.out.println();
-//                System.out.println("(" + (end - 1 - j + start) + "," + (start) + ") <-> (" + (end - 1) + "," + (end - 1 - j + start) + ")");
                 swap(image[end - 1 - j + start][start], image[end - 1][end - 1 - j + start]);
-//                printImages(n, image);
-//                System.out.println();
-//                System.out.println("(" + start + "," + j + ") <-> (" + (end - 1) + "," + (end - 1 - j + start) + ")");
                 swap(image[start][j], image[end - 1][end - 1 - j + start]);
-//                printImages(n, image);
-//                System.out.println();
             }
             end--;
         }

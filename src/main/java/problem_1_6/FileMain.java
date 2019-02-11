@@ -27,8 +27,10 @@ public class FileMain {
 
         for (char ch : str.toCharArray()) {
             if (ch == preCh) {
+                // 기존 문자와 같다면 카운트만 올림
                 cnt++;
             } else {
+                // 기존 문자와 다르다면 출력 후 값도 출력
                 System.out.print(preCh);
                 System.out.print(cnt);
                 preCh = ch;

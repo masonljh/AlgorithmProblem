@@ -4,14 +4,16 @@ public class Node {
     private String name;
     private int value;
     private boolean [] hasWayArray;
+    private boolean isVisited;
 
     public Node(String name, int value, int nodeCnt) {
         this.name = name;
         this.value = value;
         this.hasWayArray = new boolean[nodeCnt];
         for (int i = 0; i < nodeCnt; i++) {
-            hasWayArray[i] = false;
+            this.hasWayArray[i] = false;
         }
+        this.isVisited = false;
     }
 
     public String getName() {
@@ -28,5 +30,13 @@ public class Node {
 
     public void setHasWay(int end) {
         hasWayArray[end] = true;
+    }
+
+    public boolean isVisited() {
+        return isVisited;
+    }
+
+    public void setVisited(boolean visited) {
+        isVisited = visited;
     }
 }

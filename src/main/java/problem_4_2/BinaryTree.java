@@ -1,139 +1,117 @@
 package problem_4_2;
 
 public class BinaryTree {
-    public static final int ARRAY_MODE = 0;
-    public static final int LINKED_LIST_MODE = 1;
-
     private Node topNode;
-    private int mode;
-    private Node[] nodes;
     private int height;
 
-    public BinaryTree() {
+    BinaryTree() {
         height = 0;
         topNode = null;
-        mode = ARRAY_MODE;
     }
 
-    public int getMode() {
-        return mode;
+    void setValues(int[] values) {
+        addNextNode(values, 0, values.length - 1);
     }
 
-    public void setMode(int mode) {
-        this.mode = mode;
-    }
-
-    public void setValues(int [] values) {
-        if (mode != ARRAY_MODE) {
-            throw new WrongModeException();
-        }
-
-        nodes = new Node[values.length];
-        height = (int) Math.ceil(logB((nodes.length - 1), 2.0));
-        for (int i = 0; i < nodes.length; i++) {
-            // 마지막 삽입 위치에서 맨 처음 왼쪽에 넣을 수 있는지 확인
-            Node node = new Node(values[i]);
-            if (i == 0) {
-                nodes[i] = node;
-                node.setHeight(0);
-                continue;
-            }
-
-            nodes[i] = new Node(values[i]);
-            nodes[i].setHeight(getHeight(i));
-            reorderTree(i);
-        }
-    }
-
-    private int getHeight(int idx) {
-        return (int) Math.ceil(logB((idx - 1), 2.0));
-    }
-
-    private void reorderTree(int currentSize) {
-        for (int i = currentSize; i >= 0; i--) {
-            int currentIdx = i;
-            boolean hasWrongPos = false;
-            while (hasWrongPos) {
-                if (checkLocalPos(currentIdx)) {
-                    hasWrongPos = true;
-                } else {
-                    if (!checkParentNode(currentIdx)) {
-                        int parentIdx = getParentIdx(currentIdx);
-                        nodes[parentIdx].swap(nodes[currentIdx]);
-                        currentIdx = parentIdx;
-                        continue;
-                    }
-
-                    if (!checkLeftNode(currentIdx)) {
-                        int leftIdx = currentIdx * 2 + 1;
-                        nodes[leftIdx].swap(nodes[currentIdx]);
-                        currentIdx = leftIdx;
-                        continue;
-                    }
-
-                    int rightIdx = currentIdx * 2 + 2;
-                    nodes[rightIdx].swap(nodes[currentIdx]);
-                    currentIdx = rightIdx;
-                }
-            }
-        }
-    }
-
-    private boolean checkLocalPos(int currentIdx) {
-        return checkParentNode(currentIdx) && checkLeftNode(currentIdx) && checkRightNode(currentIdx);
-    }
-
-    private boolean checkParentNode(int currentIdx) {
-        boolean isLeftNode = currentIdx % 2 == 0;
-        int parentIdx = getParentIdx(currentIdx);
-        return nodes[parentIdx] == null || (isLeftNode && nodes[parentIdx].getValue() > nodes[currentIdx].getValue()) || (!isLeftNode && nodes[parentIdx].getValue() < nodes[currentIdx].getValue());
-    }
-
-    private int getParentIdx(int currentIdx) {
-        int parentIdx = currentIdx / 2;
-        return parentIdx;
-    }
-
-    private boolean checkLeftNode(int currentIdx) {
-        int leftIdx = currentIdx * 2 + 1;
-        return nodes[leftIdx] == null || nodes[leftIdx].getValue() < nodes[currentIdx].getValue();
-    }
-
-    private boolean checkRightNode(int currentIdx) {
-        int rightIdx = currentIdx * 2 + 2;
-        return nodes[rightIdx] == null || nodes[rightIdx].getValue() < nodes[currentIdx].getValue();
-    }
-
-    public double logB(double x, double base) {
-        return Math.log(x) / Math.log(base);
-    }
-
-    public void printAllNode() {
-        if (mode == ARRAY_MODE) {
-            for (int i = 0; i < nodes.length; i++) {
-                System.out.print(nodes[i].getValue() + " ");
-            }
-        }
-    }
-
-    public void addNode(Node node) {
-        if (mode != LINKED_LIST_MODE) {
-            throw new WrongModeException();
-        }
-
-        if (topNode == null) {
-            topNode = node;
-            height = node.getHeight();
+    /**
+     * 해당 영역에서 중간값을 추출하여 노드로 추가하는 메소드
+     * @param values 데이터 배열
+     * @param start 영역의 시작 위치
+     * @param end 영역의 끝 위치
+     */
+    private void addNextNode(int[] values, int start, int end) {
+        if (start == end) {
+            /*
+             * 시작과 끝이 같으면 더 이상 해당 영역에서는 넣을 수 없으므로
+             * 해당 노드만 추가하고 끝
+             */
+            Node node = new Node(values[start]);
+            addNode(node);
             return;
         }
+
+        /*
+         * 로직
+         * 1. 중간값을 추출 후 바로 노드에 넣음(이진 탐색 트리에서 중간값이 부모 노드가 됨)
+         * 2. 시작 위치 ~ 중간 위치(미포함) 영역에서 확인(재귀호출)
+         * 3. 중간 위치(미포함) ~ 끝 위치 영역에서 확인(재귀호출)
+         */
+        int mid = (start + end) / 2;
+        Node midNode = new Node(values[mid]);
+        addNode(midNode);
+        addNextNode(values, start, mid - 1);
+        addNextNode(values, mid + 1, end);
     }
 
-    public boolean isEmpty() {
-        return topNode == null;
+    /**
+     * 현재 트리의 정보를 출력하는 메소드(높이, 값들)
+     */
+    public void printTreeInfo() {
+        System.out.println(height);
+        printInorder(topNode);
     }
 
-    public void clear() {
-        height = 0;
-        topNode = null;
+    /**
+     * 중위 표기법대로 트리의 값을 탐색하여 출력하는 메소드(
+     * @param node 현재 노드
+     */
+    private void printInorder(Node node) {
+        if (node == null) {
+            return;
+        }
+
+        printInorder(node.getLeftNode());
+        System.out.print(node.getValue() + " ");
+        printInorder(node.getRightNode());
+    }
+
+    /**
+     * 트리에 노드를 추가하는 메소드
+     * @param node 추가할 노드
+     */
+    private void addNode(Node node) {
+        if (topNode == null) {
+            topNode = node;
+            height = 1;
+            return;
+        }
+
+        node.setLeftNode(null);
+        node.setRightNode(null);
+
+        int currentHeight = 0;
+        Node currentNode = topNode;
+        while (true) {
+            currentHeight++;
+            if (currentNode.getValue() < node.getValue()) {
+                if (currentNode.getRightNode() == null) {
+                    currentNode.setRightNode(node);
+                    currentHeight++;
+                    updateTreeMaxHeight(currentHeight);
+                    return;
+                }
+
+                currentNode = currentNode.getRightNode();
+            } else {
+                if (currentNode.getLeftNode() == null) {
+                    currentNode.setLeftNode(node);
+                    currentHeight++;
+                    updateTreeMaxHeight(currentHeight);
+                    return;
+                }
+
+                currentNode = currentNode.getLeftNode();
+            }
+        }
+    }
+
+    /**
+     * 현재 트리의 높이를 업데이트하는 메소드
+     * @param currentHeight 현재 탐색한 노드의 높이
+     */
+    private void updateTreeMaxHeight(int currentHeight) {
+        if (height < currentHeight) {
+            height = currentHeight;
+        }
     }
 }

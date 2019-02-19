@@ -8,7 +8,7 @@ public class FileMain {
     public static void main(String[] args) {
 
         File file = new File("src/main/java/problem_4_2/input.txt");
-        Scanner scanner = null;
+        Scanner scanner;
         int n;
         int [] datas;
         try {
@@ -30,14 +30,8 @@ public class FileMain {
         }
 
         // 이진 트리 만들기
-        int cnt = 0;
         BinaryTree binaryTree = new BinaryTree();
-        binaryTree.setMode(BinaryTree.ARRAY_MODE);
         binaryTree.setValues(datas);
-        binaryTree.printAllNode();
-        /*while (cnt < n) {
-            binaryTree.addNode(new Node(datas[idx]));
-            cnt++;
-        }*/
+        binaryTree.printTreeInfo();
     }
 }

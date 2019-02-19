@@ -71,35 +71,39 @@ public class BinaryTree {
      */
     private void addNode(Node node) {
         if (topNode == null) {
+            // 처음 노드 추가할 때
             topNode = node;
             height = 1;
             return;
         }
 
-        node.setLeftNode(null);
-        node.setRightNode(null);
-
-        int currentHeight = 0;
-        Node currentNode = topNode;
+        int currentHeight = 0;      // 삽입할 노드의 현재 높이
+        Node currentNode = topNode; // 현재 탐색 중인 노드
         while (true) {
             currentHeight++;
             if (currentNode.getValue() < node.getValue()) {
+                // 현재 탐색하고 있는 노드보다 삽입할 노드의 값이 큰 경우(오른쪽 하위 노드로 이동)
                 if (currentNode.getRightNode() == null) {
+                    // 더 이상 값이 없으므로 넣으면 끝
                     currentNode.setRightNode(node);
                     currentHeight++;
                     updateTreeMaxHeight(currentHeight);
                     return;
                 }
 
+                // 오른쪽 하위 노드로 이동
                 currentNode = currentNode.getRightNode();
             } else {
+                // 현재 탐색하고 있는 노드보다 삽입할 노드의 값이 작은 경우(왼쪽 하위 노드로 이동)
                 if (currentNode.getLeftNode() == null) {
+                    // 더 이상 값이 없으므로 넣으면 끝
                     currentNode.setLeftNode(node);
                     currentHeight++;
                     updateTreeMaxHeight(currentHeight);
                     return;
                 }
 
+                // 왼쪽 하위 노드로 이동
                 currentNode = currentNode.getLeftNode();
             }
         }

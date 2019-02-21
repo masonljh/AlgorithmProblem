@@ -1,10 +1,10 @@
 package problem_4_2;
 
-public class BinaryTree {
+public class BinarySearchTree {
     private Node topNode;
     private int height;
 
-    BinaryTree() {
+    BinarySearchTree() {
         height = 0;
         topNode = null;
     }

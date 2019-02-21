@@ -30,8 +30,8 @@ public class FileMain {
         }
 
         // 이진 트리 만들기
-        BinaryTree binaryTree = new BinaryTree();
-        binaryTree.setValues(datas);
-        binaryTree.printTreeInfo();
+        BinarySearchTree binarySearchTree = new BinarySearchTree();
+        binarySearchTree.setValues(datas);
+        binarySearchTree.printTreeInfo();
     }
 }

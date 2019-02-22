@@ -49,7 +49,7 @@ public class BinaryTree {
         if (leftNode.isFull()) {
             // 왼쪽 노드가 가득 찼다면
             if (rightNode.isFull()) {
-                // 오른쪽 노드가 가득 찼다면 하위 노드 개수를 비교해서 어디로 갈지 정함
+                // 오른쪽 노드가 가득 찼다면 자식 노드 개수를 비교해서 어디로 갈지 정함
                 currentNode = leftNode.getSubnodeCnt() < rightNode.getSubnodeCnt() ? leftNode : rightNode;
             } else {
                 // 오른쪽 노드가 가득 차지 않았다면 오른쪽 노드 탐색

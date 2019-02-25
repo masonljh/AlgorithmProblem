@@ -44,8 +44,4 @@ public class Node {
     public void increaseSubnodeCnt() {
         subnodeCnt++;
     }
-
-    public boolean hasNoSubnode() {
-        return leftNode == null && rightNode == null;
-    }
 }

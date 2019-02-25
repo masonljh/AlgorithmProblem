@@ -10,7 +10,7 @@ public class Node {
         this.value = value;
         this.leftNode = null;
         this.rightNode = null;
-        subnodeCnt = 0;
+        this.subnodeCnt = 0;
     }
 
     public int getValue() {
@@ -43,5 +43,9 @@ public class Node {
 
     public void increaseSubnodeCnt() {
         subnodeCnt++;
+    }
+
+    public boolean hasNoSubnode() {
+        return leftNode == null && rightNode == null;
     }
 }

@@ -23,9 +23,15 @@ public class BinaryTree {
 
     private void addNode(Node currentNode, int value) {
         Node node = new Node(value);
-        if (currentNode == null) {
+        if (currentNode == null && rootNode == null) {
             // 루트 노드가 비어있다면 루트 노드로 추가
             rootNode = node;
+            return;
+        }
+
+        if (currentNode == null) {
+            // 현재 탐색 중인 위치가 비어있다면 해당 위치에 추가
+            currentNode = node;
             return;
         }
 
@@ -61,6 +67,7 @@ public class BinaryTree {
         }
 
         // 현재 탐색 중인 노드로 다시 추가
+        currentNode.increaseSubnodeCnt();
         addNode(currentNode, value);
     }
 

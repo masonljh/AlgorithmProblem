@@ -1,7 +1,5 @@
 package problem_4_5;
 
-import problem_4_4.Node;
-
 public class BinaryTree {
     public static final int BINARY_SEARCH_MODE = 1;
     public static final int BALANCED_MODE = 2;

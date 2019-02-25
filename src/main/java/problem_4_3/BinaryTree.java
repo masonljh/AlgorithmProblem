@@ -30,7 +30,6 @@ public class BinaryTree {
         }
 
         if (currentNode == null) {
-            // 현재 탐색 중인 위치가 비어있다면 해당 위치에 추가
             currentNode = node;
             return;
         }

@@ -1,8 +1,11 @@
-package problem_4_4;
+package problem_4_5;
+
+import problem_4_4.Node;
 
 public class BinaryTree {
-    public static final int BALANCED_MODE = 1;
-    public static final int UNBALANCED_MODE = 2;
+    public static final int BINARY_SEARCH_MODE = 1;
+    public static final int BALANCED_MODE = 2;
+    public static final int UNBALANCED_MODE = 3;
 
     private Node rootNode;                      // 루트 노드(트리의 최상단)
 
@@ -16,6 +19,11 @@ public class BinaryTree {
      * @param mode      생성 방법(균형, 불균형)
      */
     public void setValues(int [] values, int mode) {
+        if (mode == BINARY_SEARCH_MODE) {
+            addNextNode(values, 0, values.length - 1);
+            return;
+        }
+
         for (int value : values) {
             switch (mode) {
                 case BALANCED_MODE:
@@ -24,6 +32,73 @@ public class BinaryTree {
                 case UNBALANCED_MODE:
                     addNodeInUnbalancedWay(rootNode, value);
                     break;
+            }
+        }
+    }
+
+    /**
+     * 해당 영역에서 중간값을 추출하여 노드로 추가하는 메소드
+     * @param values 데이터 배열
+     * @param start 영역의 시작 위치
+     * @param end 영역의 끝 위치
+     */
+    private void addNextNode(int[] values, int start, int end) {
+        if (start == end) {
+            /*
+             * 시작과 끝이 같으면 더 이상 해당 영역에서는 넣을 수 없으므로
+             * 해당 노드만 추가하고 끝
+             */
+            Node node = new Node(values[start]);
+            addNode(node);
+            return;
+        }
+
+        /*
+         * 로직
+         * 1. 중간값을 추출 후 바로 노드에 넣음(이진 탐색 트리에서 중간값이 부모 노드가 됨)
+         * 2. 시작 위치 ~ 중간 위치(미포함) 영역에서 확인(재귀호출)
+         * 3. 중간 위치(미포함) ~ 끝 위치 영역에서 확인(재귀호출)
+         */
+        int mid = (start + end) / 2;
+        Node midNode = new Node(values[mid]);
+        addNode(midNode);
+        addNextNode(values, start, mid - 1);
+        addNextNode(values, mid + 1, end);
+    }
+
+    /**
+     * 트리에 노드를 추가하는 메소드
+     * @param node 추가할 노드
+     */
+    private void addNode(Node node) {
+        if (rootNode == null) {
+            // 처음 노드 추가할 때
+            rootNode = node;
+            return;
+        }
+
+        Node currentNode = rootNode; // 현재 탐색 중인 노드
+        while (true) {
+            if (currentNode.getValue() < node.getValue()) {
+                // 현재 탐색하고 있는 노드보다 삽입할 노드의 값이 큰 경우(오른쪽 하위 노드로 이동)
+                if (currentNode.getRightNode() == null) {
+                    // 더 이상 값이 없으므로 넣으면 끝
+                    currentNode.setRightNode(node);
+                    return;
+                }
+
+                // 오른쪽 하위 노드로 이동
+                currentNode = currentNode.getRightNode();
+            } else {
+                // 현재 탐색하고 있는 노드보다 삽입할 노드의 값이 작은 경우(왼쪽 하위 노드로 이동)
+                if (currentNode.getLeftNode() == null) {
+                    // 더 이상 값이 없으므로 넣으면 끝
+                    currentNode.setLeftNode(node);
+                    return;
+                }
+
+                // 왼쪽 하위 노드로 이동
+                currentNode = currentNode.getLeftNode();
             }
         }
     }
@@ -105,32 +180,29 @@ public class BinaryTree {
         addNodeInBalancedWay(currentNode, value);
     }
 
-    public boolean isBalanced() {
-        return isBalanced(rootNode);
+    public boolean isBinarySearchTree() {
+        return checkInorder(rootNode);
     }
 
-    private boolean isBalanced(Node currentNode) {
-        if (currentNode == null) {
+    /**
+     * 중위 탐색법을 통해 이진 탐색 트리인지 확인하는 메소드
+     * @param node 현재 노드
+     */
+    private boolean checkInorder(Node node) {
+        if (node == null) {
             return true;
         }
 
-        int leftDept = getDepth(currentNode.getLeftNode(), 1);
-        int rightDept = getDepth(currentNode.getRightNode(), 1);
-        return isBalanced(currentNode.getLeftNode()) && isBalanced(currentNode.getRightNode()) && Math.abs(leftDept - rightDept) <= 1;
-    }
+        boolean isBinarySearchTree = true;
 
-    private int getDepth(Node currentNode, int currentDepth) {
-        if (currentNode == null) {
-            return currentDepth - 1;
+        if (node.getLeftNode() != null && node.getLeftNode().getValue() > node.getValue()) {
+            isBinarySearchTree = false;
         }
 
-        if (currentNode.hasNoSubnode()) {
-            return currentDepth;
+        if (node.getRightNode() != null && node.getRightNode().getValue() < node.getValue()) {
+            isBinarySearchTree = false;
         }
 
-        int leftDepth = getDepth(currentNode.getLeftNode(), currentDepth + 1);
-        int rightDepth = getDepth(currentNode.getRightNode(), currentDepth + 1);
-
-        return leftDepth > rightDepth ? leftDepth : rightDepth;
+        return isBinarySearchTree && (checkInorder(node.getLeftNode()) && checkInorder(node.getRightNode()));
     }
 }

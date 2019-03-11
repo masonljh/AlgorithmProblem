@@ -2,39 +2,33 @@ package programmers.id42586;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
-class Solution {
+class Solution_2 {
     public int[] solution(int[] progresses, int[] speeds) {
         int[] answer;
-        Stack<Integer> functions = new Stack<>();
         List<Integer> answerList = new ArrayList<>();
 
+        int currentDistributionIndex = 0;
         int firstFunctionDevelopPeriod = 0;
         for (int i = 0; i < progresses.length; i++) {
             if (firstFunctionDevelopPeriod == 0) {
                 // 처음 한 번 확인
                 firstFunctionDevelopPeriod = getDevelopPeriod(progresses[i], speeds[i]);
-                functions.push(progresses[i]);
+                answerList.add(1);
                 continue;
             }
 
             int period = getDevelopPeriod(progresses[i], speeds[i]);
             if (firstFunctionDevelopPeriod < period) {
                 // 배포의 첫 기능 작업일보다 현재 기능 작업일이 더 걸리면 배포일을 새로 잡음
+                currentDistributionIndex++;
                 firstFunctionDevelopPeriod = period;
-                answerList.add(functions.size());
-                functions.clear();
-                functions.add(progresses[i]);
+                answerList.add(1);
                 continue;
             }
 
-            functions.add(progresses[i]);
-        }
-
-        if (!functions.isEmpty()) {
-            // 아직 기능이 스택에 남아있는 경우 작업일에 반영
-            answerList.add(functions.size());
+            // 배포 기능 추가
+            answerList.set(currentDistributionIndex, answerList.get(currentDistributionIndex) + 1);
         }
 
         answer = new int[answerList.size()];

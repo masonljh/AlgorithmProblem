@@ -1,6 +1,6 @@
 package programmers.id42883;
 
-class Solution_2 {
+class Solution {
     public String solution(String number, int k) {
         String answer = "";
         int length = number.length();

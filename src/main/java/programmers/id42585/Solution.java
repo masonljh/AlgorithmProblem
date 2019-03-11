@@ -1,8 +1,5 @@
 package programmers.id42585;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * - 쇠막대기는 자신보다 긴 쇠막대기 위에만 놓일 수 있습니다.
  * - 쇠막대기를 다른 쇠막대기 위에 놓는 경우 완전히 포함되도록 놓되, 끝점은 겹치지 않도록 놓습니다.

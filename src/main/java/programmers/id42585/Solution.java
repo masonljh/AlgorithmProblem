@@ -11,7 +11,6 @@ package programmers.id42585;
  */
 
 class Solution {
-
     public int solution(String arrangement) {
         int answer = 0;
         int currentCnt = 0;
